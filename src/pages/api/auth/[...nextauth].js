@@ -9,15 +9,18 @@ const GOOGLE_AUTHORIZATION_URL =
     prompt: "consent",
     access_type: "offline",
     response_type: "code",
+    scope: "openid https://www.googleapis.com/auth/youtube.force-ssl",
   });
+
+let acc_provider;
 
 async function refreshGoogleAccessToken(token) {
   try {
     const url =
       "https://oauth2.googleapis.com/token?" +
       new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
         grant_type: "refresh_token",
         refresh_token: token.googleRefreshToken,
       });
@@ -60,7 +63,7 @@ async function refreshSpotifyAccessToken(token) {
 
     const { body: refreshedToken } = await spotifyApi.refreshAccessToken();
     console.log("REFRESHED TOKEN IS", refreshedToken);
-
+    spotify_access_token = refreshedToken.access_token;
     return {
       ...token,
       spotifyAccessToken: refreshedToken.access_token,
@@ -82,14 +85,25 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     SpotifyProvider({
-      clientId: process.env.SPOTIFY_CLIENT_ID,
-      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
       authorization: LOGIN_URL,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      scope: "https://www.googleapis.com/auth/youtube.force-ssl",
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      // scope: "",
+      allowDangerousEmailAccountLinking: true,
+      authorization: {
+        url: GOOGLE_AUTHORIZATION_URL,
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+          scope: ["openid https://www.googleapis.com/auth/youtube.force-ssl"],
+        },
+      },
       // authorizationUrl:
       //   "https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code",
     }),
@@ -100,6 +114,7 @@ export default NextAuth({
     async jwt({ token, account, user }) {
       // initial sign in
       if (account && user) {
+        acc_provider = account.provider;
         // console.log(token);
         if (account.provider === "spotify") {
           return {
@@ -119,7 +134,7 @@ export default NextAuth({
           };
         }
       }
-console.log(token)
+      // console.log(token)
       if (token.spotifyAccessTokenExpires) {
         if (Date.now() < token.spotifyAccessTokenExpires) {
           console.log("EXISTING SPOTIFY ACCESS TOKEN IS VALID");
@@ -142,7 +157,6 @@ console.log(token)
         }
       }
 
-       
       // else{
       //   return token;
       // }
@@ -171,8 +185,7 @@ console.log(token)
     },
 
     async session({ session, token }) {
-      session.spotifyAccessToken = token.spotifyAccessToken;
-      session.googleAccessToken = token.googleAccessToken
+      session.accProvider = acc_provider;
       session.user.spotifyAccessToken = token.spotifyAccessToken;
       session.user.spotifyRefreshToken = token.spotifyRefreshToken;
       session.user.spotifyUsername = token.spotifyUsername;

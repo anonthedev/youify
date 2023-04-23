@@ -1,5 +1,6 @@
 import "./globals.css";
 import SessionProviders from "./sessionProvider";
+import ContextProvider from "./contextProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProviders>{children}</SessionProviders>
+        <ContextProvider>
+          <SessionProviders>{children}</SessionProviders>4
+        </ContextProvider>
       </body>
     </html>
   );

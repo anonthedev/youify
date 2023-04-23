@@ -6,15 +6,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 // import SignOut from "./SignOut";
+import useSpotify from "@/hooks/useSpotify";
 
 export default function Login() {
+  // const spotify = useSpotify()
+  // console.log(localStorage.getItem("spotifyAccessToken"))
   const { data: session, status } = useSession();
-  console.log(session);
+  // console.log(spotify);
   if (status === "authenticated") {
     // localStorage.setItem("spotifyName", session.user.name);
     // localStorage.setItem("spotifyEmail", session.user.email);
     // localStorage.setItem("spotifyUsername", session.user.spotifyUsername);
-    console.log(session);
+    // console.log(session);
     // signOut()
     redirect("/googleLogin");
   }

@@ -1,9 +1,15 @@
+"use client"
+
 import Link from "next/link";
 import { Inter } from "next/font/google";
+import { useSession } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const {data: session} = useSession()
+
+console.log(session)
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       <h1 className="text-5xl font-bold font-['Ubuntu'] text-[#FFC42C] mb-2 text-center">

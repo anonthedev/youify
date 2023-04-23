@@ -4,19 +4,25 @@ import googleLogo from "../resources/images/g-logo.png";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { redirect } from "next/navigation";
+import useSpotify from "@/hooks/useSpotify";
 
 export default function GoogleLogin() {
+const LSAvailable = typeof window !== "undefined"
+
+// LSAvailable ? console.log(localStorage.getItem("spotifyAccessToken")) : ""
+  // const spotify = useSpotify()
   const { data: session, status } = useSession();
-  console.log(session);
+  // console.log(spotify);
   if (session) {
     if (session.user.googleAccessToken) {
         // localStorage.setItem("googleName", session.user.name);
         // localStorage.setItem("googleEmail", session.user.email);
         // localStorage.setItem("googleUsername", session.user.googleUsername);
         // localStorage.setItem("googleAccessToken", session.user.googleAccessToken);
-        console.log(session);
+        // console.log(session);
         // signOut()
-        // redirect("/googleLogin");
+        redirect("/converter");
       }
   }
 
