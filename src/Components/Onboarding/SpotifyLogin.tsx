@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 // import SignOut from "./SignOut";
-import useSpotify from "@/hooks/useSpotify";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -112,7 +111,7 @@ export default function Login() {
     xhr.onload = handleAuthorizationResponse;
   }
 
-  function handleAuthorizationResponse() {
+  function handleAuthorizationResponse(this:any) {
     if (this.status == 200) {
       let data = JSON.parse(this.responseText);
       // console.log(data);

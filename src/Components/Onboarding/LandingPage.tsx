@@ -1,9 +1,24 @@
 "use client";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 export default function LandingPage() {
   const LSAvailable = typeof window !== "undefined";
+  const { data: session } = useSession();
+//   console.log(session);
+  useEffect(() => {
+    if (LSAvailable && session) {
+      if (
+        session.user.googleAccessToken &&
+        localStorage.getItem("spotifyAccessToken")
+      ) {
+        redirect("/converter")
+      }
+    }
+  });
+
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       <div className="flex flex-col gap-6 justify-center items-center">

@@ -5,12 +5,21 @@ import { GlobalContext } from "@/app/contextProvider";
 import YTtoSpotify from "./YTtoSpotify/YTtoSpotify";
 import SpotifytoYT from "./SpotifytoYT/SpotifytoYT";
 import axios from "axios";
+import useRefreshSpotifyToken from "@/hooks/useRefreshSpotifyToken";
 
 export default function Converter() {
+  const currentDate = Date.now();
+  const refreshSpotifyToken = useRefreshSpotifyToken();
   const [WhatToWhat, setWhatToWhat] = useState(["YouTube", "Spotify"]);
   const [From, setFrom] = useState("YouTube");
   const [To, setTo] = useState("Spotify");
   const context = useContext(GlobalContext);
+
+  const LSAvailable = typeof window !== "undefined";
+  const spotifyToken = LSAvailable
+    ? localStorage.getItem("spotifyAccessToken")
+    : {};
+  context.setSpotifyGlobalToken(spotifyToken);
 
   useEffect(() => {
     function getUserIdSpotify() {
@@ -19,19 +28,34 @@ export default function Converter() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Authorization: "Bearer " + context.globalSpotifyToken,
+          Authorization: "Bearer " + localStorage.getItem("spotifyAccessToken"),
         },
       };
 
-      axios.get("https://api.spotify.com/v1/me", userParams).then((resp) => {
-        console.log(resp.data.id);
-        context.setUserId(resp.data.id);
-        // console.log("X");
-        // navigate("/googleLogin");
-      });
+      axios
+        .get("https://api.spotify.com/v1/me", userParams)
+        .then((resp) => {
+          // console.log(resp.data.id);
+          context.setUserId(resp.data.id);
+          // console.log("X");
+          // navigate("/googleLogin");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-
-    getUserIdSpotify();
+    if (LSAvailable) {
+      const spotifyTokenExpireDate = new Date(
+        localStorage.getItem("spotifyTokenExpire")!
+      );
+      if (currentDate >= spotifyTokenExpireDate) {
+        refreshSpotifyToken;
+      } else if (currentDate < spotifyTokenExpireDate) {
+        getUserIdSpotify();
+      } else {
+        getUserIdSpotify();
+      }
+    }
   });
 
   // console.log(WhatToWhat);

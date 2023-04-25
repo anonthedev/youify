@@ -4,16 +4,12 @@
 import { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "@/app/contextProvider";
 import axios from "axios";
-import useSpotify from "@/hooks/useSpotify";
 
 export default function SearchSongsOnSpotify({ title }: { title: any }) {
   const LSAvailable = typeof window !== "undefined";
   const spotifyToken = LSAvailable
     ? localStorage.getItem("spotifyAccessToken")
     : {};
-
-  const spotify = useSpotify();
-
   const [Alltracks, setTracks] = useState<any>([]);
   const arr: string[] = [];
   const context = useContext(GlobalContext);
@@ -28,20 +24,23 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + context.globalSpotifyToken,
+        "Access-Control-Allow-Origin": "*",
       },
     };
     // console.log(context.globalSpotifyToken)
     title
       ? title.map(async (singleTitle: any) => {
-          console.log(singleTitle);
-          const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
+          // console.log(singleTitle);
+          // const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
+          const URL = `http://localhost:3000/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
           await axios.get(URL, trackParams).then((resp) => {
-            arr.push(resp.data);
-            setTracks((Alltracks: any) => [...Alltracks, resp.data]);
+            console.log(resp);
+            // arr.push(resp.data);
+            // setTracks((Alltracks: any) => [...Alltracks, resp.data]);
           });
-          setTimeout(() => {
-            context.setPlaylistTracks(arr);
-          }, 1500);
+          // setTimeout(() => {
+          //   context.setPlaylistTracks(arr);
+          // }, 1500);
         })
       : "";
   }, [title]);

@@ -10,14 +10,14 @@ import CreateSpotifyPlaylist from "./CreateSpotifyPlaylist";
 export default function YTtoSpotify() {
     const LSAvailable = typeof window !== "undefined"
     const spotifyToken = LSAvailable ? localStorage.getItem("spotifyAccessToken") : {}
-    const [Data, setData] = useState<any>();
+    const [Data, setData] = useState<any>([]);
     const [playListURL, setPlayListURL] = useState<string>();
-    const context = useContext(GlobalContext);
+    // const context = useContext(GlobalContext);
     //   console.log(context.globalSpotifyToken)
-    context.setSpotifyGlobalToken(spotifyToken)
+    
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   
-    const YT_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${
+    let YT_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=5&playlistId=${
       playListURL ? playListURL.slice(playListURL.indexOf("list")).slice(10) : ""
     }&key=${apiKey}`;
   
@@ -29,13 +29,25 @@ export default function YTtoSpotify() {
     // );
   
     const fetchData = async (e:any) => {
+      setData([])
       e.preventDefault();
       axios
         .get(YT_URL)
         // .then((data)=> (data.json()))
         .then((resp) => {
-          // console.log(resp)
-          setData(resp);
+          // console.log(resp);
+          setData((prev: any) => [...prev, ...resp.data.items]);
+          if (resp.data.nextPageToken) {
+            YT_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=5&pageToken=${
+              resp.data.nextPageToken
+            }&playlistId=${
+              playListURL
+                ? playListURL.slice(playListURL.indexOf("list")).slice(10)
+                : ""
+            }&key=${apiKey}`;
+  
+            fetchData(e);
+          }
         });
     };
   
@@ -65,7 +77,7 @@ export default function YTtoSpotify() {
             </button>
             <CreateSpotifyPlaylist />
           </form>
-          <SearchSongsOnSpotify title={Data ? Data.data.items : []} />
+          <SearchSongsOnSpotify title={Data ? Data : []} />
         </div>
       );
     } else {
