@@ -31,16 +31,16 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
     title
       ? title.map(async (singleTitle: any) => {
           // console.log(singleTitle);
-          // const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
-          const URL = `http://localhost:3000/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
+          const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
+          // const URL = `http://localhost:3000/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
           await axios.get(URL, trackParams).then((resp) => {
-            console.log(resp);
-            // arr.push(resp.data);
-            // setTracks((Alltracks: any) => [...Alltracks, resp.data]);
+            // console.log(resp);
+            arr.push(resp.data);
+            setTracks((Alltracks: any) => [...Alltracks, resp.data]);
           });
-          // setTimeout(() => {
-          //   context.setPlaylistTracks(arr);
-          // }, 1500);
+          setTimeout(() => {
+            context.setPlaylistTracks(arr);
+          }, 1500);
         })
       : "";
   }, [title]);
