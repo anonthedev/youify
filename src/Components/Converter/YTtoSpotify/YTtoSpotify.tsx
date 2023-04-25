@@ -48,7 +48,7 @@ export default function YTtoSpotify() {
             className="flex gap-2 flex-row md:flex-col md:justify-center md:items-center"
           >
             <input
-              className="p-4 w-96 md:w-80 rounded"
+              className="p-4 w-96 md:w-80 rounded text-black"
               type="url"
               name=""
               id=""
@@ -58,7 +58,7 @@ export default function YTtoSpotify() {
               }}
             />
             <button
-              className="rounded py-2 px-4 bg-[#FFC42C] text-black font-['Raleway'] font-semibold"
+              className="rounded py-2 px-4 bg-[#FFC42C] text-black font-raleway font-medium"
               type="submit"
             >
               Get Tracks

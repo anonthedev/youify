@@ -20,7 +20,7 @@ const LSAvailable = typeof window !== "undefined"
         // localStorage.setItem("googleEmail", session.user.email);
         // localStorage.setItem("googleUsername", session.user.googleUsername);
         // localStorage.setItem("googleAccessToken", session.user.googleAccessToken);
-        // console.log(session);
+        console.log(session);
         // signOut()
         redirect("/converter");
       }
@@ -41,7 +41,7 @@ const LSAvailable = typeof window !== "undefined"
           onClick={() => {
             signIn("google");
           }}
-          className="flex flex-row gap-4 items-center justify-center px-8 py-4 rounded text-black font-semibold font-['Raleway'] bg-white"
+          className="flex flex-row gap-4 items-center justify-center px-8 py-4 rounded text-black font-semibold font-raleway bg-white"
         >
           <Image src={googleLogo} alt="" width={30} height={30} />
           Sign In With Google

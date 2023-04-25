@@ -103,7 +103,7 @@ export default function CreateSpotifyPlaylist() {
     return (
       <div className="flex">
         <button
-          className={`rounded py-2 px-4 bg-[#1bc257] text-black font-['Raleway'] font-medium ${
+          className={`rounded py-2 px-4 bg-[#1bc257] text-black font-raleway font-medium ${
             trackURIs.length === 0 || PlaylistCreated || PlaylistCreating
               ? "opacity-50"
               : "opacity-100"

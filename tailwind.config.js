@@ -9,8 +9,19 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "spotify-green": "#1bc257",
+        "youtube-red": "#fd0000",
+      },
+      fontFamily: {
+        raleway: ["var(--font-raleway)"],
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    // ...
+  ],
 }
 

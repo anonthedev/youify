@@ -22,7 +22,8 @@ export default function useSpotify() {
           signIn();
         }
         context.setSpotifyGlobalToken(session.user.spotifyAccessToken)
-        localStorage.setItem("spotifyAccessToken", session.user.spotifyAccessToken)
+        // localStorage.setItem("spotifyAccessToken", session.user.spotifyAccessToken)
+        // localStorage.setItem("spotifyAccessTokenExpire", session.expires)
         spotifyApi.setAccessToken(session.user.spotifyAccessToken);
       }
 

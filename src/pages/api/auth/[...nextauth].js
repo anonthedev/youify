@@ -14,6 +14,8 @@ const GOOGLE_AUTHORIZATION_URL =
 
 let acc_provider;
 
+const LSAvailabe = typeof window !== "undefined";
+
 async function refreshGoogleAccessToken(token) {
   try {
     const url =
@@ -104,8 +106,6 @@ export default NextAuth({
           scope: ["openid https://www.googleapis.com/auth/youtube.force-ssl"],
         },
       },
-      // authorizationUrl:
-      //   "https://accounts.google.com/o/oauth2/v2/auth?prompt=consent&access_type=offline&response_type=code",
     }),
     // ...add more providers here
   ],
@@ -115,7 +115,8 @@ export default NextAuth({
       // initial sign in
       if (account && user) {
         acc_provider = account.provider;
-        // console.log(token);
+        // Check if there are existing tokens for each provider
+
         if (account.provider === "spotify") {
           return {
             ...token,
@@ -134,6 +135,9 @@ export default NextAuth({
           };
         }
       }
+      // console.log(token);
+      // const spotifyToken = token.providers?.spotify;
+      // const googleToken = token.providers?.google;
       // console.log(token)
       if (token.spotifyAccessTokenExpires) {
         if (Date.now() < token.spotifyAccessTokenExpires) {
@@ -156,44 +160,30 @@ export default NextAuth({
           return await refreshGoogleAccessToken(token);
         }
       }
-
-      // else{
-      //   return token;
-      // }
-
-      // console.log(token);
-      // console.log(user);
-      // if (account) {
-      //   refreshAccessToken(account, token);
-      // }
-
-      // Return previous token if the access token has not expired yet
-      // if (Date.now() < token.googleAccessTokenExpires) {
-      //   return token
-      // }
-
-      // // Access token has expired, try to update it
-      // return refreshAccessToken(token)
-      // if (Date.now() < token.spotifyAccessTokenExpires) {
-      //   console.log("EXISTING ACCESS TOKEN IS VALID");
-      //   return token;
-      // }
-
-      // // Access token has expired, we need to refresh it...
-      // console.log("ACCESS TOKEN HAS EXPIRED, REFRESHING...");
-      // return await refreshSpotifyAccessToken(token);
     },
 
     async session({ session, token }) {
       session.accProvider = acc_provider;
+      // session.user.spotify = token.spotify
+      // session.user.google = token.google
       session.user.spotifyAccessToken = token.spotifyAccessToken;
       session.user.spotifyRefreshToken = token.spotifyRefreshToken;
       session.user.spotifyUsername = token.spotifyUsername;
       session.user.googleAccessToken = token.googleAccessToken;
       session.user.googleRefreshToken = token.googleRefreshToken;
       session.user.googleUsername = token.googleUsername;
+      // session.user = token
 
       return session;
+    },
+  },
+  events: {
+    async linkAccount({ user, account, profile }) {
+      if (user && account) {
+        console.log(user, account, profile);
+
+        console.log("xa")
+      }
     },
   },
 });

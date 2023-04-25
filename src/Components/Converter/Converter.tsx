@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import {useState, useContext} from 'react'
-import { GlobalContext } from '@/app/contextProvider';
-import YTtoSpotify from './YTtoSpotify/YTtoSpotify';
-import SpotifytoYT from './SpotifytoYT/SpotifytoYT';
+import { useState, useContext, useEffect } from "react";
+import { GlobalContext } from "@/app/contextProvider";
+import YTtoSpotify from "./YTtoSpotify/YTtoSpotify";
+import SpotifytoYT from "./SpotifytoYT/SpotifytoYT";
+import axios from "axios";
 
 export default function Converter() {
   const [WhatToWhat, setWhatToWhat] = useState(["YouTube", "Spotify"]);
@@ -11,12 +12,32 @@ export default function Converter() {
   const [To, setTo] = useState("Spotify");
   const context = useContext(GlobalContext);
 
+  useEffect(() => {
+    function getUserIdSpotify() {
+      var userParams = {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + context.globalSpotifyToken,
+        },
+      };
+
+      axios.get("https://api.spotify.com/v1/me", userParams).then((resp) => {
+        console.log(resp.data.id);
+        context.setUserId(resp.data.id);
+        // console.log("X");
+        // navigate("/googleLogin");
+      });
+    }
+
+    getUserIdSpotify();
+  });
+
   // console.log(WhatToWhat);
   return (
     <main className="w-screen flex flex-col">
-      <div className="self-end px-10 py-4">
-        {/* <SignOut /> */}
-      </div>
+      <div className="self-end px-10 py-4">{/* <SignOut /> */}</div>
       <section className="h-screen flex flex-col items-center justify-center gap-20">
         <div className="flex flex-row w-screen items-center justify-center gap-4">
           <div className="flex flex-col items-center justify-center gap-2">
