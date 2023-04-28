@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { GlobalContext } from "@/app/contextProvider";
 
 export default function CreateYTPlaylist() {
@@ -11,7 +11,24 @@ export default function CreateYTPlaylist() {
       })
     : "";
 
-  const [GeneratingPlaylist, setGeneratingPlaylist] = useState<boolean>();
+  const wait = "Wait...";
+  const creating = "Creating...";
+  const created = "Playlist Created";
+  const wrong = "Try again";
+
+  const [playlistCompletion, setPlaylistCompletion] = useState("");
+
+  useEffect(() => {
+    if (playlistCompletion === created) {
+      setTimeout(() => {
+        setPlaylistCompletion("Create Playlist");
+      }, 3000);
+    } else if (playlistCompletion === wrong) {
+      setTimeout(() => {
+        setPlaylistCompletion("Create Playlist");
+      }, 3000);
+    }
+  }, [playlistCompletion]);
 
   function addTracksToPlaylist(videoId: string, playlistId: string) {
     fetch(
@@ -36,17 +53,24 @@ export default function CreateYTPlaylist() {
     // console.log(videoId, playlistId)
   }
 
-  const callCreatePlaylist = (e:any) => {
+  const callCreatePlaylist = (e: any) => {
     e.preventDefault();
+    setPlaylistCompletion(wait);
     setTimeout(() => {
-      context.globalGoogleToken && context.PlaylistName && videoIds.length > 0
-        ? createPlaylist()
-        : "";
+      if (
+        context.globalGoogleToken &&
+        context.PlaylistName &&
+        videoIds.length > 0
+      ) {
+        createPlaylist();
+      } else {
+        setPlaylistCompletion(wrong);
+      }
     }, 2000);
   };
 
   async function createPlaylist() {
-    setGeneratingPlaylist(true);
+    setPlaylistCompletion(creating);
     var createPlaylistParams = {
       method: "POST",
       headers: {
@@ -83,41 +107,37 @@ export default function CreateYTPlaylist() {
         });
       })
       .then(() => {
-        setGeneratingPlaylist(false);
-        context.setPlaylistGenerated(true);
-        setTimeout(() => {
-          context.setPlaylistGenerated(false);
-        }, 3000);
+        setPlaylistCompletion(created);
       })
       .catch(() => {
-        context.setPlaylistGenerated(false);
+        setPlaylistCompletion("Try again");
       });
   }
 
   return (
     <div className="flex">
       <button
-        className={`rounded py-2 px-4 bg-[#fd0000] text-white font-['Ubuntu'] font-medium ${
+        className={`rounded py-2 px-4 bg-[#fd0000] text-white font-raleway font-medium ${
           videoIds.length === 0 ||
-          GeneratingPlaylist ||
-          context.PlaylistGenerated
+          playlistCompletion === wait ||
+          playlistCompletion === creating ||
+          playlistCompletion === created ||
+          playlistCompletion === wrong
             ? "opacity-50"
             : "opacity-100"
         }`}
         onClick={callCreatePlaylist}
         disabled={
           videoIds.length === 0 ||
-          GeneratingPlaylist ||
-          context.PlaylistGenerated
+          playlistCompletion === wait ||
+          playlistCompletion === creating ||
+          playlistCompletion === created ||
+          playlistCompletion === wrong
             ? true
             : false
         }
       >
-        {context.PlaylistGenerated
-          ? "Playlist Created"
-          : GeneratingPlaylist
-          ? "Creating..."
-          : "Create Playlist"}
+        {playlistCompletion ? playlistCompletion : "Create Playlist"}
       </button>
     </div>
   );

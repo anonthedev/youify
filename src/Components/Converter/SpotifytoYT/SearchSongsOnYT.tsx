@@ -1,54 +1,51 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { GlobalContext } from "@/app/contextProvider";
 
 export default function SearchSongsOnYT({ title }: { title: any }) {
   const [Alltracks, setTracks] = useState<any[]>([]);
   const context = useContext(GlobalContext);
 
-  // console.log(Cookies.get("SpotifyAuthToken"))
-  // console.log(title);
-  // console.log(Cookies.get("SpotifyAuthToken"))
+  const playlistNameRef = useRef(null);
 
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-    const arr:any[] = [];
-    console.log(localStorage.getItem("spotifyAccessToken"))
+    const arr: any[] = [];
+    // console.log(localStorage.getItem("spotifyAccessToken"))
     setTracks([]);
-    context.setCanGenerateYTPlaylist();
-    context.setPlaylistGenerated();
-    // title
-    //   ? title.map(async (singleTitle:any) => {
-    //       const URL = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${
-    //         singleTitle.track.name.replace(" ", "%20") +
-    //         "%20" +
-    //         singleTitle.track.artists[0].name.replace(" ", "%20") +
-    //         "%20" +
-    //         "song"
-    //       }&type=video&part=snippet&maxResults=1`;
-    //       // console.log(URL);
-    //       await fetch(URL)
-    //         .then((data) => data.json())
-    //         .then((resp) => {
-    //           console.log(resp);
-    //           arr.push(resp);
-    //           setTracks((Alltracks) => [...Alltracks, resp]);
-    //         });
-    //       setTimeout(() => {
-    //         context.setPlaylistTracks(arr);
-    //       }, 1500);
-    //     })
-    //   : "";
-  }, [context]);
+    title
+      ? title.map(async (singleTitle: any) => {
+          const URL = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${
+            singleTitle.track.name.replace(" ", "%20") +
+            "%20" +
+            singleTitle.track.artists[0].name.replace(" ", "%20") +
+            "%20" +
+            "song"
+          }&type=video&part=snippet&maxResults=1`;
+          // console.log(URL);
+          await fetch(URL)
+            .then((data) => data.json())
+            .then((resp) => {
+              // console.log(resp);
+              arr.push(resp);
+              setTracks((Alltracks) => [...Alltracks, resp]);
+            });
+          setTimeout(() => {
+            context.setPlaylistTracks(arr);
+          }, 1500);
+        })
+      : "";
+  }, [title]);
 
   // console.log(Alltracks.length != 0 ? Alltracks : "");
   // console.log(context.playlistTracks.length != 0 ? context.playlistTracks : "");
 
   return (
     <div className="max-h-48 overflow-y-visible">
-      <div className="flex flex-row gap-4 items-center">
+      <div className="flex flex-row gap-4 items-center md:flex-col">
         <input
-          className="p-4 rounded"
+          ref={playlistNameRef}
+          className="p-4 rounded text-black"
           type="text"
           name=""
           id=""
@@ -60,8 +57,8 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
           }}
         />
         <textarea
-          className="p-4 rounded h-auto"
-        //   type="text"
+          className="p-4 rounded h-auto text-black"
+          //   type="text"
           name=""
           id=""
           placeholder="Playlist Desc (optional)"
@@ -73,9 +70,11 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
         />
       </div>
 
-      {context.canGenerateYTPlaylist ? (
+      {!context.PlaylistName && context.playlistTracks.length !== 0 ? (
         <div>
-          <p className="text-[#842a2a]">Please set playlist name</p>
+          <p className="text-[#b73030]  md:text-center font-semibold">
+            Please set Playlist name
+          </p>
         </div>
       ) : (
         ""

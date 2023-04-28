@@ -12,8 +12,6 @@ export default function ContextProvider({ children }: { children: any }) {
   const [globalGoogleToken, setGlobalGoogleToken] = useState()
   const [PlaylistName, setPlaylistName] = useState()
   const [PlaylistDesc, setPlaylistDesc] = useState()
-  const [canGenerateYTPlaylist, setCanGenerateYTPlaylist] = useState();
-  const [PlaylistGenerated, setPlaylistGenerated] = useState()
 
 
   return (
@@ -32,10 +30,6 @@ export default function ContextProvider({ children }: { children: any }) {
         setPlaylistName,
         PlaylistDesc,
         setPlaylistDesc,
-        canGenerateYTPlaylist,
-        setCanGenerateYTPlaylist,
-        PlaylistGenerated,
-        setPlaylistGenerated,
       }}>
       {children}
     </GlobalContext.Provider>

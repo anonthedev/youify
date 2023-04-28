@@ -6,8 +6,12 @@ import YTtoSpotify from "./YTtoSpotify/YTtoSpotify";
 import SpotifytoYT from "./SpotifytoYT/SpotifytoYT";
 import axios from "axios";
 import useRefreshSpotifyToken from "@/hooks/useRefreshSpotifyToken";
+import SignOut from "../SignOut";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Converter() {
+  const { status, data: session } = useSession();
   const currentDate = Date.now();
   const refreshSpotifyToken = useRefreshSpotifyToken();
   const [WhatToWhat, setWhatToWhat] = useState(["YouTube", "Spotify"]);
@@ -20,6 +24,17 @@ export default function Converter() {
     ? localStorage.getItem("spotifyAccessToken")
     : {};
   context.setSpotifyGlobalToken(spotifyToken);
+
+  useEffect(() => {
+    if (LSAvailable && session) {
+      if (
+        status === "unauthenticated" &&
+        !localStorage.getItem("spotifyAccessToken")
+      ) {
+        redirect("/");
+      }
+    }
+  });
 
   useEffect(() => {
     function getUserIdSpotify() {
@@ -46,8 +61,9 @@ export default function Converter() {
     }
     if (LSAvailable) {
       const spotifyTokenExpireDate = new Date(
-        localStorage.getItem("spotifyTokenExpire")!
+        localStorage.getItem("spotifyTokenExpire")
       );
+      // console.log(typeof spotifyTokenExpireDate)
       if (currentDate >= spotifyTokenExpireDate) {
         refreshSpotifyToken;
       } else if (currentDate < spotifyTokenExpireDate) {
@@ -61,7 +77,9 @@ export default function Converter() {
   // console.log(WhatToWhat);
   return (
     <main className="w-screen flex flex-col">
-      <div className="self-end px-10 py-4">{/* <SignOut /> */}</div>
+      <div className="self-end px-10 py-4">
+        <SignOut />
+      </div>
       <section className="h-screen flex flex-col items-center justify-center gap-20">
         <div className="flex flex-row w-screen items-center justify-center gap-4">
           <div className="flex flex-col items-center justify-center gap-2">

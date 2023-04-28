@@ -15,29 +15,32 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
   const context = useContext(GlobalContext);
 
   // console.log(context.userId);
-
+  // console.log(context.globalSpotifyToken)
   // console.log(context);
   useEffect(() => {
     setTracks([]);
     var trackParams = {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: "Bearer " + context.globalSpotifyToken,
-        "Access-Control-Allow-Origin": "*",
       },
     };
     // console.log(context.globalSpotifyToken)
     title
       ? title.map(async (singleTitle: any) => {
-          // console.log(singleTitle);
-          const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
-          // const URL = `http://localhost:3000/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
-          await axios.get(URL, trackParams).then((resp) => {
-            // console.log(resp);
-            arr.push(resp.data);
-            setTracks((Alltracks: any) => [...Alltracks, resp.data]);
-          });
+          // console.log(singleTitle.snippet.title);
+          // const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
+          const URL = `/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
+          await fetch(URL, trackParams)
+          .then((data)=>data.json())
+            .then((resp) => {
+              console.log(resp);
+              arr.push(resp);
+              setTracks((Alltracks: any) => [...Alltracks, resp]);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           setTimeout(() => {
             context.setPlaylistTracks(arr);
           }, 1500);
@@ -45,13 +48,13 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
       : "";
   }, [title]);
   //   console.log(context)
-  // console.log(Alltracks.length != 0 ? Alltracks : "");
+  console.log(Alltracks.length != 0 ? Alltracks : "");
 
   return (
     <div className="max-h-48 overflow-y-visible">
       {Alltracks.length != 0
         ? Alltracks.map((track: any, index: number) => {
-            const actualTrack = track.tracks.items[0];
+            const actualTrack = track.tracks.items[0]
             return (
               <div key={index}>
                 <a href={actualTrack.external_urls.spotify} target="_blank">

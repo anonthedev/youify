@@ -11,6 +11,8 @@ const params = {
   scope: scopes,
 };
 
+// console.log(localStorage.getItem("spotifyAccessToken"))
+
 const queryParamString = new URLSearchParams(params);
 
 const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryParamString.toString()}`;

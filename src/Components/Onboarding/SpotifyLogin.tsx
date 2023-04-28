@@ -38,18 +38,29 @@ export default function Login() {
   const currentDate = new Date();
   let refreshToken;
   let accessToken;
+  // let spotifyToken = ;
+  // let checkLogin;
+  // useEffect(() => {
+  //   if (LSAvailabe) {
+  //     if (localStorage.getItem("spotifyAccessToken")) {
+  //       redirect(`/googleLogin`);
+  //     }
+  //   }
+  // }, [LSAvailabe]);
 
   useEffect(() => {
     function spotifyLogin() {
       let code = getCode();
-      fetchAccessToken(code);
+      if (code) {
+        fetchAccessToken(code);
+      }
     }
     spotifyLogin();
   });
 
   useEffect(() => {
     function refreshAccessToken() {
-      refreshToken = localStorage.getItem("refreshToken");
+      refreshToken = localStorage.getItem("spotifyRefreshToken");
       let body = "grant_type=refresh_token";
       body += "&refresh_token=" + refreshToken;
       body += "&client_id=" + clientId;
@@ -60,7 +71,7 @@ export default function Login() {
       if (currentDate > expireDate) {
         refreshAccessToken();
       } else if (currentDate < expireDate) {
-        redirect("/googleLogin")
+        redirect("/googleLogin");
         // console.log(localStorage.getItem("spotifyAccessToken"));
       }
     }
@@ -68,12 +79,10 @@ export default function Login() {
 
   function getCode() {
     let code = null;
-    console.log();
     const queryString = window.location.search;
     if (queryString.length > 0) {
       const urlParams = new URLSearchParams(queryString);
       code = urlParams.get("code");
-      // redirect(`/googleLogin`);
     }
     return code;
   }
@@ -111,10 +120,10 @@ export default function Login() {
     xhr.onload = handleAuthorizationResponse;
   }
 
-  function handleAuthorizationResponse(this:any) {
+  function handleAuthorizationResponse(this: any) {
     if (this.status == 200) {
       let data = JSON.parse(this.responseText);
-      // console.log(data);
+      console.log(data);
       currentDate.setTime(currentDate.getTime() + 1 * 60 * 60 * 1000);
       localStorage.setItem("spotifyTokenExpire", currentDate.toString());
       // var data = JSON.parse(this.responseText);
@@ -125,14 +134,13 @@ export default function Login() {
       if (data.refresh_token != undefined) {
         refreshToken = data.refresh_token;
         localStorage.setItem("spotifyRefreshToken", refreshToken);
+        window.location.replace("/googleLogin")
+      } else {
+        console.log(this.responseText);
+        // alert(this.responseText);
       }
-      // onPageLoad();
-    } else {
-      console.log(this.responseText);
-      // alert(this.responseText);
     }
   }
-
   return (
     <section className="h-screen flex flex-col items-center">
       <div className="w-screen h-[calc(100vh-100px)] flex flex-col items-center justify-center">
