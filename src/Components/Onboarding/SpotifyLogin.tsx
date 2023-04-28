@@ -53,7 +53,7 @@ export default function Login() {
     function spotifyLogin() {
       let code = getCode();
       if (code) {
-        window.location.replace("/spotifyLogin")
+        // window.location.replace("/spotifyLogin")
         fetchAccessToken(code);
       }
     }
