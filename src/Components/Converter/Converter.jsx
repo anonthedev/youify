@@ -77,10 +77,10 @@ export default function Converter() {
   // console.log(WhatToWhat);
   return (
     <main className="w-screen flex flex-col">
-      <div className="self-end px-10 py-4">
+      <div className="self-end px-10 md:px-4 py-4">
         <SignOut />
       </div>
-      <section className="h-screen flex flex-col items-center justify-center gap-20">
+      <section className="h-screen flex flex-col items-center justify-center gap-20 md:gap-10 md:-mt-10">
         <div className="flex flex-row w-screen items-center justify-center gap-4">
           <div className="flex flex-col items-center justify-center gap-2">
             <div className="bg-[#2d2d2d] px-8 py-2 rounded-md text-center">
@@ -98,7 +98,7 @@ export default function Converter() {
               setTo(WhatToWhat[1]);
               context.setPlaylistTracks([]);
             }}
-            className="text-3xl cursor-pointer"
+            className="text-3xl md:text-xl cursor-pointer"
           >
             {String.fromCodePoint(parseInt("21C5", 16))}
           </div>

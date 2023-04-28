@@ -30,10 +30,10 @@ const LSAvailable = typeof window !== "undefined"
     <section className="h-screen flex flex-col items-center">
       <div className="w-screen h-[calc(100vh-100px)] flex flex-col items-center justify-center">
         <div className="flex flex-col justify-center items-center mb-10">
-          <h1 className="text-5xl font-bold font-['Ubuntu'] text-[#FFC42C] mb-2 text-center">
+          <h1 className="text-5xl font-bold font-raleway text-[#FFC42C] mb-2 text-center">
             YouIfy
           </h1>
-          <p className="text-center font-['Ubuntu'] font-light">
+          <p className="text-center font-raleway font-light">
             Make your playlists travel.
           </p>
         </div>

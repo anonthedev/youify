@@ -4,6 +4,8 @@ import SearchSongsOnYT from "./SearchSongsOnYT";
 import CreateYTPlaylist from "./CreateYTPlaylist";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import ytLogo from "../../resources/images/yt-logo.png"
+import Image from "next/image";
 
 export default function SpotifytoYT() {
   const [Data, setData] = useState<any>();
@@ -89,6 +91,9 @@ export default function SpotifytoYT() {
           </div>
         ) : null}
         <SearchSongsOnYT title={Data ? Data.items : []} />
+        <div className="fixed bottom-0 left-0">
+          <Image src={ytLogo} width={120} height={10} className={`mt-2`} alt="YouTube logo"></Image>
+        </div>
       </div>
     );
   } else if (!context.globalSpotifyToken) {

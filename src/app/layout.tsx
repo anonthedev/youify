@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import "./globals.css";
 import SessionProviders from "./sessionProvider";
 import ContextProvider from "./contextProvider";
@@ -9,9 +10,9 @@ export const metadata = {
 };
 
 const raleway = Raleway({
-  variable: '--font-raleway',
+  variable: "--font-raleway",
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 export default function RootLayout({
@@ -25,6 +26,18 @@ export default function RootLayout({
         <ContextProvider>
           <SessionProviders>{children}</SessionProviders>
         </ContextProvider>
+        <div className="w-fit fixed bottom-0 right-0 py-4 px-4">
+          <a
+            href="https://www.producthunt.com/products/youify/reviews?utm_source=badge-product_review&utm_medium=badge&utm_souce=badge-youify"
+            target="_blank"
+          >
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=520846&theme=dark"
+              alt="Youify - Convert&#0032;YouTube&#0032;playlists&#0032;to&#0032;Spotify&#0032;in&#0032;seconds | Product Hunt"
+              className={`w-[250px] h-[40px] md:w-[200px]`}
+            />
+          </a>
+        </div>
       </body>
     </html>
   );
