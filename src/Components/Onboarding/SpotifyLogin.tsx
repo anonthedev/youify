@@ -52,6 +52,7 @@ export default function Login() {
     function spotifyLogin() {
       let code = getCode();
       if (code) {
+        window.location.replace("/spotifyLogin")
         fetchAccessToken(code);
       }
     }
@@ -134,7 +135,7 @@ export default function Login() {
       if (data.refresh_token != undefined) {
         refreshToken = data.refresh_token;
         localStorage.setItem("spotifyRefreshToken", refreshToken);
-        window.location.replace("/googleLogin")
+        // window.location.replace("/googleLogin")
       } else {
         console.log(this.responseText);
         // alert(this.responseText);
@@ -145,10 +146,10 @@ export default function Login() {
     <section className="h-screen flex flex-col items-center">
       <div className="w-screen h-[calc(100vh-100px)] flex flex-col items-center justify-center">
         <div className="flex flex-col justify-center items-center mb-10">
-          <h1 className="text-5xl font-bold font-['Ubuntu'] text-[#FFC42C] mb-2 text-center">
+          <h1 className="text-5xl font-bold font-raleway text-[#FFC42C] mb-2 text-center">
             YouIfy
           </h1>
-          <p className="text-center font-['Ubuntu'] font-light">
+          <p className="text-center font-raleway font-light">
             Convert your YouTube playlist to Spotify in seconds.
           </p>
         </div>
