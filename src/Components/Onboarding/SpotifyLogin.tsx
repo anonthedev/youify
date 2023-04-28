@@ -136,7 +136,7 @@ export default function Login() {
       if (data.refresh_token != undefined) {
         refreshToken = data.refresh_token;
         localStorage.setItem("spotifyRefreshToken", refreshToken);
-        // window.location.replace("/googleLogin")
+        window.location.replace("/googleLogin")
       } else {
         console.log(this.responseText);
         // alert(this.responseText);
