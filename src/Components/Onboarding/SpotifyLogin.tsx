@@ -34,7 +34,8 @@ export default function Login() {
   // }
   const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET;
-  const redirectURI = "http://localhost:3000/spotifyLogin/";
+  const localRedirectURI = "http://localhost:3000/spotifyLogin/";
+  const redirectURI = "https://youify.xyz/spotifyLogin"
   const currentDate = new Date();
   let refreshToken;
   let accessToken;
