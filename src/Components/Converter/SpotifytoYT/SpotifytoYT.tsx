@@ -13,7 +13,7 @@ export default function SpotifytoYT() {
   const context = useContext(GlobalContext);
   const { data: session } = useSession();
 
-  context.setGlobalGoogleToken(session.user.googleAccessToken);
+  context.setGlobalGoogleToken(session && session.user.googleAccessToken);
   const [playistURLVaild, setPlayistURLValid] = useState<boolean>();
   // const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
