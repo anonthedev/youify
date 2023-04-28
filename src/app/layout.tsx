@@ -3,6 +3,7 @@ import "./globals.css";
 import SessionProviders from "./sessionProvider";
 import ContextProvider from "./contextProvider";
 import { Raleway } from "next/font/google";
+import {Analytics} from "@vercel/analytics/react"
 
 export const metadata = {
   title: "Youify",
@@ -38,6 +39,7 @@ export default function RootLayout({
             />
           </a>
         </div>
+        <Analytics/>
       </body>
     </html>
   );
