@@ -125,7 +125,7 @@ export default function Login() {
   function handleAuthorizationResponse(this: any) {
     if (this.status == 200) {
       let data = JSON.parse(this.responseText);
-      console.log(data);
+      // console.log(data);
       currentDate.setTime(currentDate.getTime() + 1 * 60 * 60 * 1000);
       localStorage.setItem("spotifyTokenExpire", currentDate.toString());
       // var data = JSON.parse(this.responseText);

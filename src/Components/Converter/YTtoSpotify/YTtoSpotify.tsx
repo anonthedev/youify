@@ -30,7 +30,7 @@ export default function YTtoSpotify() {
   // console.log(
   //   context.playlistTracks ? context.playlistTracks.tracks.items[0].uri : "no"
   // );
-  console.log(spotifyToken)
+  // console.log(spotifyToken)
 
   const handleOnSubmit = (e: any) => {
     setData([]);

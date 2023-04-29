@@ -34,7 +34,7 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
           await fetch(URL, trackParams)
           .then((data)=>data.json())
             .then((resp) => {
-              console.log(resp);
+              // console.log(resp);
               arr.push(resp);
               setTracks((Alltracks: any) => [...Alltracks, resp]);
             })
@@ -48,7 +48,7 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
       : "";
   }, [title]);
   //   console.log(context)
-  console.log(Alltracks.length != 0 ? Alltracks : "");
+  // console.log(Alltracks.length != 0 ? Alltracks : "");
 
   return (
     <div className="max-h-48 overflow-y-visible">

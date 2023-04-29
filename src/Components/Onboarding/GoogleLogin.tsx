@@ -20,7 +20,7 @@ const LSAvailable = typeof window !== "undefined"
         // localStorage.setItem("googleEmail", session.user.email);
         // localStorage.setItem("googleUsername", session.user.googleUsername);
         // localStorage.setItem("googleAccessToken", session.user.googleAccessToken);
-        console.log(session);
+        // console.log(session);
         // signOut()
         redirect("/converter");
       }
