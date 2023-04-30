@@ -11,13 +11,15 @@ const getSpotifySongs = async (req: NextApiRequest, res: NextApiResponse) => {
   };
   // console.log(details);
 
-  const response = await fetch(
+  const response = await axios.get(
     `https://api.spotify.com/v1/search?q=${q}&type=${type}`,
     details
   );
-  const data = await response.json();
-  // console.log(data);
-  return res.end(JSON.stringify(data));
+  // const data = await response.json();
+  // res.status(200).json(response.data)
+  if (response.status === 200) {
+    return res.send(response.data);
+  }
 };
 
 export default getSpotifySongs;

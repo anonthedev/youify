@@ -5,10 +5,13 @@ export default function CreateSpotifyPlaylist() {
   const context = useContext(GlobalContext);
   const trackURIs: string[] = [];
   const tooManyTracks: Array<any> = [];
+  // console.log(context.playlistTracks)
   context.playlistTracks
     ? context.playlistTracks.map((track: any) => {
         // console.log(track.tracks.items[0].uri);
-        trackURIs.push(track.tracks.items[0].uri);
+        if (track.tracks.items[0]) {
+          trackURIs.push(track.tracks.items[0].uri);
+        }
       })
     : "";
 
@@ -18,7 +21,7 @@ export default function CreateSpotifyPlaylist() {
 
   const [playlistCompletion, setPlaylistCompletion] = useState("");
 
-  // console.log(trackURIs.length != 0 ? trackURIs : "");
+  console.log(trackURIs.length != 0 ? trackURIs : "");
 
   useEffect(() => {
     if (playlistCompletion === created) {
