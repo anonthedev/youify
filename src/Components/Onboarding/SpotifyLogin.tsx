@@ -155,7 +155,7 @@ export default function Login() {
           </p>
         </div>
         <Link
-          href={`${AUTHORIZE}?client_id=${clientId}&response_type=code&redirect_uri=${redirectURI}&show_dialog=true&scope=${scopes}`}
+          href={`${AUTHORIZE}?client_id=${clientId}&response_type=code&redirect_uri=${localRedirectURI}&show_dialog=true&scope=${scopes}`}
         >
           <button
             className="flex flex-row py-2 px-6 items-center bg-[#1bc257] rounded text-black font-[500] font-raleway"

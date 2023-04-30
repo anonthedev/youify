@@ -61,6 +61,7 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
           //   type="text"
           name=""
           id=""
+          cols={30}
           placeholder="Playlist Desc (optional)"
           value={context.PlaylistDesc}
           disabled={Alltracks.length === 0 ? true : false}
@@ -80,26 +81,28 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
         ""
       )}
 
-      {Alltracks.length != 0
-        ? Alltracks.map((track, index) => {
-            const actualTrack = track.items[0];
-            // console.log(actualTrack)
-            return (
-              <div key={index}>
-                <div className="flex flex-row items-center my-2 gap-2 sm:px-8">
-                  <img
-                    className="rounded"
-                    src={actualTrack.snippet.thumbnails.default.url}
-                    alt=""
-                  />
-                  <div className="flex gap-2 flex-col">
-                    <h3 className="">{actualTrack.snippet.title}</h3>
+      <div className="w-96">
+        {Alltracks.length != 0
+          ? Alltracks.map((track, index) => {
+              const actualTrack = track.items[0];
+              // console.log(actualTrack)
+              return (
+                <div key={index}>
+                  <div className="flex flex-row items-center my-2 gap-2 sm:px-8">
+                    <img
+                      className="rounded"
+                      src={actualTrack.snippet.thumbnails.default.url}
+                      alt=""
+                    />
+                    <div className="flex gap-2 flex-col">
+                      <h3 className="">{actualTrack.snippet.title}</h3>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
-        : ""}
+              );
+            })
+          : ""}
+      </div>
     </div>
   );
 }

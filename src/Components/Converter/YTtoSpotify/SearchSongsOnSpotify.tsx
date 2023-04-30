@@ -51,7 +51,7 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
   // console.log(Alltracks.length != 0 ? Alltracks : "");
 
   return (
-    <div className="max-h-48 overflow-y-visible">
+    <div className="max-h-48 w-96 overflow-y-visible">
       {Alltracks.length != 0
         ? Alltracks.map((track: any, index: number) => {
             const actualTrack = track.tracks.items[0]
