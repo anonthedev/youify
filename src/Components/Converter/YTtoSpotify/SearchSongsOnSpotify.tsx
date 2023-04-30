@@ -35,6 +35,7 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
           .then((data)=>data.json())
             .then((resp) => {
               // console.log(resp);
+              console.log(resp.status)
               arr.push(resp);
               setTracks((Alltracks: any) => [...Alltracks, resp]);
             })
