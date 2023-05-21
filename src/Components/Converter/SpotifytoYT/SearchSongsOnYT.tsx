@@ -20,7 +20,7 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
             "%20" +
             singleTitle.track.artists[0].name.replace(" ", "%20") +
             "%20" +
-            "song"
+            "song topic"
           }&type=video&part=snippet&maxResults=1`;
           // console.log(URL);
           await fetch(URL)
