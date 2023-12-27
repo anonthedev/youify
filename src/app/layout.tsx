@@ -7,7 +7,7 @@ import {Analytics} from "@vercel/analytics/react"
 
 export const metadata = {
   title: "Youify",
-  description: "Convert playlist from one platform to another",
+  description: "Seamlessly convert playlists between YouTube and Spotify with Youify. User-friendly and secure playlist migration tool.",
   keywords: [
   "YouTube to Spotify converter",
   "Spotify to YouTube playlist migration",
