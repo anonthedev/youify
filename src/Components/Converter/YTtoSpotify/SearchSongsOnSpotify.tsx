@@ -6,17 +6,10 @@ import { GlobalContext } from "@/app/contextProvider";
 import axios from "axios";
 
 export default function SearchSongsOnSpotify({ title }: { title: any }) {
-  const LSAvailable = typeof window !== "undefined";
-  const spotifyToken = LSAvailable
-    ? localStorage.getItem("spotifyAccessToken")
-    : {};
   const [Alltracks, setTracks] = useState<any>([]);
   const arr: string[] = [];
   const context = useContext(GlobalContext);
 
-  // console.log(context.userId);
-  // console.log(context.globalSpotifyToken)
-  // console.log(context);
   useEffect(() => {
     setTracks([]);
     var trackParams = {
@@ -30,13 +23,10 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
       ? title.map(async (singleTitle: any) => {
           // console.log(singleTitle.snippet.title);
           // const URL = `https://api.spotify.com/v1/search?q=${singleTitle.snippet.title}&type=track`;
-          const URL = `/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title}&type=track`;
+          const URL = `/api/spotify/getSpotifySongs?q=${singleTitle.snippet.title.slice(0, 45)}&type=track`;
           await axios
             .get(URL, trackParams)
-            // .then((data)=>data.json())
             .then((resp) => {
-              // console.log(resp);
-              // console.log(resp.status);
               if (resp.status === 200 && resp.data) {
                   arr.push(resp.data);
                   setTracks((Alltracks: any) => [...Alltracks, resp.data]);
@@ -51,8 +41,6 @@ export default function SearchSongsOnSpotify({ title }: { title: any }) {
         })
       : "";
   }, [title]);
-  //   console.log(context)
-  // console.log(Alltracks.length != 0 ? Alltracks : "");
 
   return (
     <div className="max-h-48 w-96 overflow-y-visible">

@@ -61,12 +61,12 @@ export default function Converter() {
     }
     if (LSAvailable) {
       const spotifyTokenExpireDate = new Date(
-        localStorage.getItem("spotifyTokenExpire")
+        localStorage.getItem("spotifyTokenExpire")!
       );
-      // console.log(typeof spotifyTokenExpireDate)
-      if (currentDate >= spotifyTokenExpireDate) {
+      // console.log(typeof currentDate)
+      if (new Date(currentDate) >= spotifyTokenExpireDate) {
         refreshSpotifyToken;
-      } else if (currentDate < spotifyTokenExpireDate) {
+      } else if (new Date(currentDate) < spotifyTokenExpireDate) {
         getUserIdSpotify();
       } else {
         getUserIdSpotify();

@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useContext } from "react";
-import axios from "axios";
+import { useState } from "react";
 import Link from "next/link";
-import { GlobalContext } from "@/app/contextProvider";
 import SearchSongsOnSpotify from "./SearchSongsOnSpotify";
 import CreateSpotifyPlaylist from "./CreateSpotifyPlaylist";
+import { fetchYTPlaylist } from "@/Components/utils/utilsFunctions";
 
 export default function YTtoSpotify() {
   const LSAvailable = typeof window !== "undefined";
@@ -24,43 +23,14 @@ export default function YTtoSpotify() {
     playListURL ? playListURL.slice(playListURL.indexOf("list")).slice(10) : ""
   }&key=${apiKey}`;
 
-  // console.log(YT_URL);
-
-  // console.log(context.userId);
   // console.log(
   //   context.playlistTracks ? context.playlistTracks.tracks.items[0].uri : "no"
   // );
-  // console.log(spotifyToken)
 
   const handleOnSubmit = (e: any) => {
     setData([]);
     e.preventDefault();
-    fetchData();
-  };
-
-  const fetchData = async () => {
-    // setData([]);
-    // e.preventDefault();
-    axios
-      .get(YT_URL)
-      // .then((data)=> (data.json()))
-      .then((resp) => {
-        // console.log(resp);
-        setData((prev: any) => [...prev, ...resp.data.items]);
-        if (resp.data.nextPageToken) {
-          YT_URL = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&pageToken=${
-            resp.data.nextPageToken
-          }&playlistId=${
-            playListURL
-              ? playListURL.slice(playListURL.indexOf("list")).slice(10)
-              : ""
-          }&key=${apiKey}`;
-
-          fetchData();
-        } else if (!resp.data.nextPageToken) {
-          setAllItemsRecieved(true);
-        }
-      });
+    fetchYTPlaylist(YT_URL, playListURL, apiKey!, setAllItemsRecieved, setData);
   };
 
   if (spotifyToken) {

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, FormEvent } from "react";
 import { GlobalContext } from "@/app/contextProvider";
 import SearchSongsOnYT from "./SearchSongsOnYT";
 import CreateYTPlaylist from "./CreateYTPlaylist";
@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import ytLogo from "../../resources/images/yt-logo.png"
 import Image from "next/image";
+import { fetchSpotifyPlaylist } from "@/Components/utils/utilsFunctions";
 
 export default function SpotifytoYT() {
   const [Data, setData] = useState<any>();
@@ -15,11 +16,8 @@ export default function SpotifytoYT() {
 
   context.setGlobalGoogleToken(session && session.user.googleAccessToken);
   const [playistURLVaild, setPlayistURLValid] = useState<boolean>();
-  // const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
-  // console.log(context.globalSpotifyToken);
-
-  const spotify_URL = `	https://api.spotify.com/v1/playlists/${
+  const SPOTIFY_URL = `	https://api.spotify.com/v1/playlists/${
     playListURL
       ? playListURL.substring(
           playListURL.indexOf("playlist") + 9,
@@ -27,24 +25,6 @@ export default function SpotifytoYT() {
         )
       : ""
   }/tracks`;
-
-  const fetchData = async (e: any) => {
-    e.preventDefault();
-    var getPlaylist = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + context.globalSpotifyToken,
-      },
-    };
-    fetch(spotify_URL, getPlaylist)
-      .then((data) => data.json())
-      .then((resp) => {
-        // console.log(resp);
-        setData(resp);
-      });
-  };
 
   if (context.globalGoogleToken) {
     return (
@@ -54,7 +34,9 @@ export default function SpotifytoYT() {
         </div> */}
         <form
           action=""
-          onSubmit={fetchData}
+          onSubmit={(e:FormEvent)=>{
+            fetchSpotifyPlaylist(e, context.globalSpotifyToken, SPOTIFY_URL, setData)
+          }}
           className="flex gap-2 flex-row md:flex-col md:justify-center md:items-center"
         >
           <input
