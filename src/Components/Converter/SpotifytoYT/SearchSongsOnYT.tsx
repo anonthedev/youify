@@ -91,7 +91,7 @@ export default function SearchSongsOnYT({ title }: { title: any }) {
                   <div className="flex flex-row items-center my-2 gap-2 sm:px-8">
                     <img
                       className="rounded"
-                      src={actualTrack.snippet.thumbnails.default.url}
+                      src={actualTrack.snippet.thumbnails.default.url ? actualTrack.snippet.thumbnails.default.url : "https://images.unsplash.com/photo-1611162616475-46b635cb6868?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
                       alt=""
                     />
                     <div className="flex gap-2 flex-col">
